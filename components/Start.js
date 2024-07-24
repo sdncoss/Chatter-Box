@@ -3,11 +3,11 @@ import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ImageBackg
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
-  const [userColor, setUserColor] = useState('');
+  const [background, setBackground] = useState('');
 
   {/* Function to handle color selection*/} 
   const handleColorSelection = (color) => {
-    setUserColor(color);
+    setBackground(color);
   };
 
 
@@ -27,27 +27,27 @@ const Start = ({ navigation }) => {
         <View style={styles.colorButtonContainer}>
         <TouchableOpacity 
         style={[styles.colorButton, {backgroundColor: '#93C3CD'}, 
-          userColor === '#93C3CD' && styles.selectedColor]} 
+          background === '#93C3CD' && styles.selectedColor]} 
         onPress={() => handleColorSelection('#93C3CD')} >
         </TouchableOpacity>
         <TouchableOpacity 
         style={[styles.colorButton, {backgroundColor: '#E7EFCD'}, 
-          userColor === '#E7EFCD' && styles.selectedColor]} 
+          background === '#E7EFCD' && styles.selectedColor]} 
         onPress={() => handleColorSelection('#E7EFCD')} >
         </TouchableOpacity>
         <TouchableOpacity 
         style={[styles.colorButton, {backgroundColor: '#FDC2B1'}, 
-          userColor === '#FDC2B1' && styles.selectedColor]} 
+          background === '#FDC2B1' && styles.selectedColor]} 
         onPress={() => handleColorSelection('#FDC2B1')} >
         </TouchableOpacity>
         <TouchableOpacity 
         style={[styles.colorButton, {backgroundColor: '#E8DDCF'}, 
-          userColor === '#E8DDCF' && styles.selectedColor]} 
+          background === '#E8DDCF' && styles.selectedColor]} 
         onPress={() => handleColorSelection('#E8DDCF')} >
         </TouchableOpacity>
         </View>
         {/* button for user to start chat */}
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chat', { name: name })}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chat', { name: name, background: background })}>
           <Text>Start Chatting</Text>
         </TouchableOpacity>
         </View>
@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     fontSize: '45',
     fontWeight: '600',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    color: '#FCFDF4'
   },
   textInput: {
     width: "88%",
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   },
   selectedColor: {
     borderColor: '#c0c0c0',
-    borderWidth: 2
+    borderWidth: 5
   },
   button: {
     fontSize: 16,
