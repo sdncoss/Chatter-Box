@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ImageBackground, Platform, KeyboardAvoidingView } from 'react-native';
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -51,6 +51,7 @@ const Start = ({ navigation }) => {
           <Text>Start Chatting</Text>
         </TouchableOpacity>
         </View>
+        {Platform.OS === "ios"?<KeyboardAvoidingView behavior="padding" />: null}
       </ImageBackground>
   );
 }
@@ -58,23 +59,22 @@ const Start = ({ navigation }) => {
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    opacity: '20%'
+    justifyContent: "center",
+    alignItems: "center"
   },
   container: {
-    width: '80%',
-    height: '30%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FCFDF4'
+    width: "80%",
+    height: "30%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FCFDF4"
   },
   appTitle: {
     marginBottom: 100,
-    fontSize: '45',
-    fontWeight: '600',
-    justifyContent: 'center',
-    color: '#FCFDF4'
+    fontSize: 45,
+    fontWeight: "bold",
+    justifyContent: "center",
+    color: "#FCFDF4"
   },
   textInput: {
     width: "88%",
@@ -82,17 +82,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTip: 15,
     marginBottom: 15,
-    opacit: '50%',
-    backgroundColor: '#FCFDF4',
+    opacit: "50%",
+    backgroundColor: "#FCFDF4",
     borderRadius: 5
   },
   colorButtonContainer: {
-    flexDirection: 'row',
-    alignSelf: 'flex-start',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignSelf: "flex-start",
+    alignItems: "center",
     marginTop: 15,
     marginBottom: 15,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   colorButton: {
     marginRight: 20,
@@ -101,18 +101,18 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     border: 3,
-    borderColor: 'grey'
+    borderColor: "grey"
   },
   selectedColor: {
-    borderColor: '#c0c0c0',
+    borderColor: "#c0c0c0",
     borderWidth: 5
   },
   button: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     padding: 10,
-    radius: '5px',
-    backgroundColor: '#FDC2B1',
+    radius: 5,
+    backgroundColor: "#FDC2B1",
     borderRadius: 50
   }
 });

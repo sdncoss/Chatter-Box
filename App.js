@@ -1,8 +1,11 @@
+//import screens
 import Start from "./components/Start";
 import Chat from './components/Chat';
+//importing react navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+//create navigator
 const Stack = createNativeStackNavigator();
 
 const App = () => {
