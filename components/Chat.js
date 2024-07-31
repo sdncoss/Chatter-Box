@@ -1,55 +1,55 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+import { collection, docs, addDoc, onSnapshot, query, where, orderBy } from "firebase/firestore";
 
-const Chat = ({ route, navigation }) => {
+const Chat = ({ route, navigation, db }) => {
   //imports name and selected user color from start
-  const { name, background } = route.params;
+  const { name, background, userID } = route.params;
   //initiate message
   const [messages, setMessages] = useState([]);
+
   // setting new message for input
   const onSend = (newMessages) => {
-    setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages))
+    addDoc(collection(db, "messages"), newMessages[0])
   }
   //chang to bubble colors
   const renderBubble = (props) => {
     return <Bubble {...props}
     wrapperStyle={{
       right: {
-        backgroundColor: "#93C3CD"
+        backgroundColor: "#829D93"
       },
       left: {
-        backgroundColor: "#E8DDCF"
+        backgroundColor: "#FCFDF4"
       }
     }}
     />
   }
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 2,
-        text: 'This is a system message',
-        createdAt: new Date(),
-        system: true,
-      },
-    ]);
+    //add name from start screen to page
+    navigation.setOptions({ title: name });
+    //querying the database collecting the messages to deplay messages
+    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+        const unsubMessages = onSnapshot(q, (docs) => {
+            let newMessages = [];
+            docs.forEach(doc => {
+                newMessages.push({ 
+                  id: doc.id, 
+                  ...doc.data(), 
+                  createdAt: new Date(doc.data().createdAt.toMillis())
+                })
+            });
+            setMessages(newMessages);
+        });
+        //clean up code
+        return () => {
+            if (unsubMessages) unsubMessages();
+        }
   }, []);
 
-  //add name to top of page
-  useEffect(() => {
-    navigation.setOptions({ title: name });
-  }, []);
+
 
   return (
     <View style={[styles.container, { backgroundColor: background }]}> 
@@ -58,7 +58,7 @@ const Chat = ({ route, navigation }) => {
         renderBubble={renderBubble}
         onSend={messages => onSend(messages)}
         user={{
-          _id: 1
+          _id: userID
         }}
       />
       {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
