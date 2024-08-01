@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ImageBackground, Platform, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ImageBackground, Platform, KeyboardAvoidingView, Alert } from 'react-native';
 import { getAuth, signInAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
@@ -65,10 +65,11 @@ const Start = ({ navigation }) => {
           <Text>Start Chatting</Text>
         </TouchableOpacity>
         </View>
-        {Platform.OS === "ios"?<KeyboardAvoidingView behavior="padding" />: null}
+        {Platform.OS === "android" ? (<KeyboardAvoidingView behavior="height" />) : null}
+        {Platform.OS === "ios" ? (<KeyboardAvoidingView behavior="padding" />) : null}
       </ImageBackground>
   );
-}
+};
 
 const styles = StyleSheet.create({
   image: {

@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, KeyboardAvoidingView, Platform } from 'react-native';
-import { GiftedChat, Bubble } from 'react-native-gifted-chat';
-import { collection, docs, addDoc, onSnapshot, query, where, orderBy } from "firebase/firestore";
+import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
+import { collection, addDoc, onSnapshot, query, where, orderBy } from "firebase/firestore";
+//localStorage from React and Expo
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Chat = ({ route, navigation, db }) => {
+
+const Chat = ({ route, navigation, db, isConnected }) => {
   //imports name and selected user color from start
   const { name, background, userID } = route.params;
   //initiate message
@@ -12,56 +15,91 @@ const Chat = ({ route, navigation, db }) => {
   // setting new message for input
   const onSend = (newMessages) => {
     addDoc(collection(db, "messages"), newMessages[0])
-  }
+  };
+
   //chang to bubble colors
   const renderBubble = (props) => {
     return <Bubble {...props}
-    wrapperStyle={{
-      right: {
-        backgroundColor: "#829D93"
-      },
-      left: {
-        backgroundColor: "#FCFDF4"
-      }
-    }}
+      wrapperStyle={{
+        right: {
+          backgroundColor: "#829D93"
+        },
+        left: {
+          backgroundColor: "#FCFDF4"
+        }
+      }}
     />
-  }
+  };
+
+  const renderInputToolbar = (props) => {
+    if (isConnected) return <InputToolbar {...props} />;
+    else return null;
+  };
+
+  //mounting the data from the database and checking user id
+  let unsubMessages;
 
   useEffect(() => {
     //add name from start screen to page
     navigation.setOptions({ title: name });
-    //querying the database collecting the messages to deplay messages
-    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
-        const unsubMessages = onSnapshot(q, (docs) => {
-            let newMessages = [];
-            docs.forEach(doc => {
-                newMessages.push({ 
-                  id: doc.id, 
-                  ...doc.data(), 
-                  createdAt: new Date(doc.data().createdAt.toMillis())
-                })
-            });
-            setMessages(newMessages);
-        });
-        //clean up code
-        return () => {
-            if (unsubMessages) unsubMessages();
-        }
-  }, []);
 
+    if (isConnected === true) {
+      // unregister current onSnapshot() listener to avoid registering multiple listeners when
+      // useEffect code is re-executed.
+      if (unsubMessages) unsubMessages();
+      unsubMessages = null;
+
+      //querying the database collecting the messages to deplay messages
+      const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+      //function when change to collection 
+      unsubMessages = onSnapshot(q, (docs) => {
+        let newMessages = [];
+        //loops through doc in snapshot
+        docs.forEach(doc => {
+          newMessages.push({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: new Date(doc.data().createdAt.toMillis())
+          })
+        });
+        cacheMessages(newMessages);
+        setMessages(newMessages);
+      });
+    } else loadCachedMessages();
+
+    //clean up code
+    return () => {
+      if (unsubMessages) unsubMessages();
+    };
+  }, [isConnected]);
+
+  const cacheMessages = async (messagesToCache) => {
+    try {
+      await AsyncStorage.setItem("messages", JSON.stringify(messagesToCache));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //when isConnected is false 
+  const loadCachedMessages = async () => {
+    const cachedMessages = (await AsyncStorage.getItem("messages")) || [];
+    setMessages(JSON.parse(cachedMessages));
+  };
 
 
   return (
-    <View style={[styles.container, { backgroundColor: background }]}> 
+    <View style={[styles.container, { backgroundColor: background }]}>
       <GiftedChat
         messages={messages}
         renderBubble={renderBubble}
+        renderInputToolbar={renderInputToolbar}
         onSend={messages => onSend(messages)}
         user={{
           _id: userID
         }}
       />
-      {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
+      {Platform.OS === "android" ? <KeyboardAvoidingView behavior="height" /> : null}
     </View>
   );
 }

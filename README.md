@@ -18,6 +18,7 @@
 <li>React Native</li>
 <li>Expo & Expo Go App</li>
 <li>Gifted Chat (React Native Library)</li>
-<li>Google Firebase</li>
+<li>Google Firestore</li>
+<li>AsyncStorage (React Native/Expo)</li>
 </ul>
 </p>
