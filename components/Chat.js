@@ -4,9 +4,12 @@ import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import { collection, addDoc, onSnapshot, query, where, orderBy } from "firebase/firestore";
 //localStorage from React and Expo
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomActions from "./CustomActions";
+import MapView from 'react-native-maps';
 
 
-const Chat = ({ route, navigation, db, isConnected }) => {
+
+const Chat = ({ route, navigation, db, isConnected, storage }) => {
   //imports name and selected user color from start
   const { name, background, userID } = route.params;
   //initiate message
@@ -35,6 +38,34 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     if (isConnected) return <InputToolbar {...props} />;
     else return null;
   };
+  //calls the custom actions page for adding photos and locations
+  const renderCustomActions = (props) => {
+    return <CustomActions storage={storage} {...props} />;
+  };
+
+  //renders the MapView
+  const renderCustomView = (props) => {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{
+            width: 150,
+            height: 100,
+            borderRadius: 13,
+            margin: 3
+          }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      )
+    }
+    return null;
+  }
 
   //mounting the data from the database and checking user id
   let unsubMessages;
@@ -81,7 +112,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     }
   };
 
-  //when isConnected is false 
+  //when isConnected is false loads messages saved on device
   const loadCachedMessages = async () => {
     const cachedMessages = (await AsyncStorage.getItem("messages")) || [];
     setMessages(JSON.parse(cachedMessages));
@@ -94,6 +125,8 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         messages={messages}
         renderBubble={renderBubble}
         renderInputToolbar={renderInputToolbar}
+        renderActions={renderCustomActions}
+        renderCustomView={renderCustomView}
         onSend={messages => onSend(messages)}
         user={{
           _id: userID
