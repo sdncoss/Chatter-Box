@@ -1,5 +1,5 @@
 <h1>Chatter Box App</h1> 
-<div></div>
+
 <p>Built for mobile devices using React Native. The app will provide users with a chat interface and options to share images and their location.<p>
 <h2>Project Features<h2>
 <ul>
