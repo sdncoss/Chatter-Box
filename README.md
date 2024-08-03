@@ -1,6 +1,6 @@
 <h1>Chatter Box App</h1> 
 
-<p>Built for mobile devices using React Native. The app will provide users with a chat interface and options to share images and their location.<p>
+<p>Built for mobile devices using React Native. The app will provide users with a chat interface and options to share images and their location.</p>
 <h2>Project Features<h2>
 <p>
 <ul>
