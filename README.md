@@ -2,33 +2,43 @@
 
 <p>Built for mobile devices using React Native. The app will provide users with a chat interface and options to share images and their location.<p>
 <h2>Project Features<h2>
+<p>
 <ul>
 <li>A page where users can enter their name and choose a background color for the chat screen before joining the chat.</li>
 <li>A page displaying the conversation, as well as an input field and submit button.</li>
 <li>The chat provides users with two additional communication features: sending images and location data.</li>
 <li>Data gets stored online and offline.</li>
+</ul>
+</p>
 <h2>Dependencies<h2>
+<p>
+<ul>
 <li>React Native</li>
 <li>Expo & Expo Go App</li>
 <li>Gifted Chat (React Native Library)</li>
 <li>Google Firestore</li>
 <li>AsyncStorage (React Native/Expo)</li>
+</ul>
+</p>
 <h2>How to:</h2>
 <h3>Installation</h3>
-<ul>
-<li>1. Clone repository: Download zip or git clone https://github.com/sdncoss/Chatter-Box.git</li>
-<li>2. Node Dependencies:</li>
+<p>
+<ol>
+<li>Clone repository: Download zip or git clone https://github.com/sdncoss/Chatter-Box.git</li>
+<li>Node Dependencies:</li>
 Check if you already have Node.js, nvm, and npm installed.<br>
 - npm -v <br>
 - nvm -v<br>
 if not, please install<br>
 - npm intall<br>
-<li>3. Google Firestore/Firebase Dependencies:</li>
+<li>Google Firestore/Firebase Dependencies:</li>
 - Create an account (https://firebase.google.com/)<br>
 - Start a new projectM<br>
 - Set up database under build --> Firestore Database (under rules tabe change: allow read, write: if true;)<br>
 - Activate Storage under build --> Storage (under rules tabe change: allow read, write: if true;)<br>
 - Start the Expo development server: npx expo start Usage
+</ol>
+</p>
 <h3>Usage</h3>
 <p>Run on Emulator<br>
 - Ensure you have an Android or iOS emulator running<br>
