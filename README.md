@@ -31,7 +31,7 @@ Google Firestore/Firebase Dependencies:
 * Activate Storage under build --> Storage (under rules tabe change: allow read, write: if true;)
 * Start the Expo development server: npx expo start
 
-### Usage<
+### Usage
 Run on Emulator
 * Ensure you have an Android or iOS emulator running
 * Press a (for Android) or i (for iOS) in the Expo CLI to start the app on the emulator.
